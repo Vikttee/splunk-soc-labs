@@ -45,3 +45,42 @@ Persistence mechanisms (ways attackers make sure they keep access even after a r
 ## Lab 2 - Brute Force Alert Investigation
 
 **A real alert scenario I received:**
+
+![Alert details](Lab2 - Alert scenario.png)
+
+**How I started:** I filtered by sourcetype, IP, and the index provided in the lab. Almost immediately something stood out - the user john.smith had a huge number of failed login attempts in a very short time window.
+
+![Lab 2 - initial search](lab2_task1.png)
+
+**What I found:** Filtering by action values showed **631 failed login attempts**. That number alone is a strong indicator of brute force. But what confirmed it was finding **3 successful logins** mixed in - meaning the attacker eventually got through. The host tryhackme-2404 was compromised.
+
+![Lab 2 - 631 failures confirmed](lab2_task1.1.png)
+
+![Lab 2 - successful logins after failures](lab2_task1.2.png)
+
+**Conclusion:** True Positive. 631 failures followed by successful logins is textbook credential stuffing - cycling through passwords until one works.
+
+---
+
+## Lab 3 — Malicious Scheduled Task Investigation
+
+**The alert:** Suspicious activity linked to a scheduled task named AssessmentTaskOne.
+
+![Alert details](Lab3 - Alert scenario.png)
+
+**How I started:** I searched for the task name in Splunk and filtered by the known activity timestamp to narrow the results down quickly. Three events came back.
+
+![Lab 3 - search results](lab3_task1.png)
+
+**What I found:** The first event had everything. Looking at the Message field, I could see a scheduled task configured to run every day at **10:15**. Breaking down what it was doing:
+
+- Used certutil — a legitimate Windows built-in tool to download rv.exe from a suspicious domain (tryhotme - note the typo, a common evasion trick)
+- Saved to the Temp folder under the name DataCollector.exe designed to look innocent
+- Executed using Start-Process PowerShell
+- All running under the user account oliver.thompson
+
+![Lab 3 - message field with certutil command](lab3_task1.1.png)
+
+![Lab 3 - full task details](lab3_task1.2.png)
+
+**Conclusion:** True Positive. This is a persistence mechanism, a daily scheduled task downloading and running a payload. Certutil abuse, a typosquatted domain, a disguised filename, and a recurring schedule are all clear red flags.
