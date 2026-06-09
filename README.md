@@ -39,3 +39,9 @@ I filtered for failed password in the logs. The answer was **4 failed attempts**
 Persistence mechanisms (ways attackers make sure they keep access even after a reboot) tend to show up in syslog rather than auth.log, because they involve services and scheduled jobs rather than logins. I filtered `source=syslog` and found the port the backdoor was configured to connect to.
 
 ![Task 5 - persistence](lab1_task5.png)
+
+---
+
+## Lab 2 - Brute Force Alert Investigation
+
+**A real alert scenario I received:**
