@@ -46,7 +46,7 @@ Persistence mechanisms (ways attackers make sure they keep access even after a r
 
 **A real alert scenario I received:**
 
-![Alert details](Lab2 - Alert scenario.png)
+![Alert details](Lab2_Alert_scenario.png)
 
 **How I started:** I filtered by sourcetype, IP, and the index provided in the lab. Almost immediately something stood out - the user john.smith had a huge number of failed login attempts in a very short time window.
 
@@ -66,7 +66,7 @@ Persistence mechanisms (ways attackers make sure they keep access even after a r
 
 **The alert:** Suspicious activity linked to a scheduled task named AssessmentTaskOne.
 
-![Alert details](Lab3 - Alert scenario.png)
+![Alert details](Lab3_Alert_scenario.png)
 
 **How I started:** I searched for the task name in Splunk and filtered by the known activity timestamp to narrow the results down quickly. Three events came back.
 
